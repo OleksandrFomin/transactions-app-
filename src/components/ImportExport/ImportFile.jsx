@@ -2,7 +2,13 @@ import React, { useState, useRef, useEffect } from "react";
 import Papa from "papaparse";
 import { Button } from "react-bootstrap";
 
-const ImportFile = (props) => {
+const ImportFile = ({
+  setTransactions,
+  setStatusFilterValue,
+  setTypeFilterValue,
+  statusFilterOptions,
+  typeFilterOptions,
+}) => {
   const [CSVFile, setCSVFile] = useState(null);
   const didMountRef = useRef(false);
 
@@ -12,8 +18,9 @@ const ImportFile = (props) => {
 
   const updateData = (result) => {
     let data = result.data;
-    props.setTransactions(data);
-    console.log(data);
+    setStatusFilterValue(statusFilterOptions[0]);
+    setTypeFilterValue(typeFilterOptions[0]);
+    setTransactions(data);
   };
 
   const importCSV = () => {
@@ -24,7 +31,7 @@ const ImportFile = (props) => {
   };
 
   useEffect(() => {
-    if (didMountRef.current) {
+    if (didMountRef.current && CSVFile) {
       importCSV();
     } else didMountRef.current = true;
   }, [CSVFile]);
@@ -32,7 +39,7 @@ const ImportFile = (props) => {
   return (
     <div>
       <Button variant="success" style={styles.inputBtn}>
-        Import{" "}
+        Import
         <input
           type="file"
           name="file"

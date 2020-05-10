@@ -21,3 +21,10 @@ export const deleteObjectFromArray = (items, itemId, objPropName) => {
     return item[objPropName] !== itemId;
   });
 };
+
+export const arrayToObject = (array) =>
+  array.reduce((obj, item) => {
+    console.log(item);
+    obj[item.TransactionId] = item;
+    return obj;
+  }, {});

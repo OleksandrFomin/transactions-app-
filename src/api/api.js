@@ -67,6 +67,10 @@ mock.onGet("/transactions").reply(200, {
 });
 
 export const fetchTransactionsRequest = async () => {
-  let response = await axios.get("/transactions");
-  return response.data.transactions;
+  try {
+    let response = await axios.get("/transactions");
+    return response.data.transactions;
+  } catch (error) {
+    console.log(error);
+  }
 };

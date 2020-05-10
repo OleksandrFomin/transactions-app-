@@ -83,6 +83,12 @@ const TransactionsTable = ({
     setFilteredTransactions(getFilteredTransactions(filterValues));
   }, [transactions, statusFilterValue, typeFilterValue]);
 
+  useEffect(() => {
+    if (!currentTransactions.length && currentPage > 1) {
+      setCurrentPage((page) => page - 1);
+    }
+  }, [currentTransactions]);
+
   const editTransactionStatus = (id, status) => {
     changeTransactionStatus(id, status);
     setIsEditModalActive(false);
@@ -100,8 +106,8 @@ const TransactionsTable = ({
   };
 
   const toggleDeleteModal = (id) => {
-    setIsDeleteModalActive(!isDeleteModalActive);
     setItemDeleteId(id);
+    setIsDeleteModalActive(!isDeleteModalActive);
   };
 
   const paginate = (pageNum) => {
@@ -141,22 +147,43 @@ const TransactionsTable = ({
 
           <div style={styles.importExportBtnContainer}>
             <div style={styles.importExportBtnItem}>
-              <ImportFile setTransactions={setTransactions} />
+              <ImportFile
+                setTransactions={setTransactions}
+                statusFilterOptions={statusFilterOptions}
+                typeFilterOptions={typeFilterOptions}
+                setStatusFilterValue={setStatusFilterValue}
+                setTypeFilterValue={setTypeFilterValue}
+              />
             </div>
             <div style={styles.importExportBtnItem}>
               <ExportFile currentTransactions={currentTransactions} />
             </div>
           </div>
         </div>
-        {!isLoading ? (
+        {isLoading ? (
+          // preloader
+          <div style={styles.preloaderContainer}>
+            <Spinner animation="grow" />
+          </div>
+        ) : (
           <div>
             <Table striped bordered hover size="sm">
               <TableHeader />
-              <TableContent
-                currentTransactions={currentTransactions}
-                toggleEditModal={toggleEditModal}
-                toggleDeleteModal={toggleDeleteModal}
-              />
+              {!currentTransactions.length ? (
+                <tr>
+                  <td colspan="6" style={styles.noItemsText}>
+                    No content to be displayed
+                  </td>
+                </tr>
+              ) : (
+                <TableContent
+                  currentTransactions={currentTransactions}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  toggleEditModal={toggleEditModal}
+                  toggleDeleteModal={toggleDeleteModal}
+                />
+              )}
             </Table>
             <div style={styles.paginationContainer}>
               <PaginationComponent
@@ -169,11 +196,6 @@ const TransactionsTable = ({
                 setPagesPortionNumber={setPagesPortionNumber}
               />
             </div>
-          </div>
-        ) : (
-          // preloader
-          <div style={styles.preloaderContainer}>
-            <Spinner animation="grow" />
           </div>
         )}
 
@@ -230,6 +252,11 @@ const styles = {
     marginRight: "20px",
   },
 
+  noItemsText: {
+    textAlign: "center",
+    verticalAlign: "middle",
+    fontSize: "24px",
+  },
   paginationContainer: {
     display: "flex",
     justifyContent: "center",

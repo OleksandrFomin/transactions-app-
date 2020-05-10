@@ -4,7 +4,7 @@ const TableHeader = () => {
   return (
     <thead>
       <tr style={{ textAlign: "center" }}>
-        <th>Id</th>
+        <th>ID</th>
         <th>Status</th>
         <th>Type</th>
         <th>Client name</th>
