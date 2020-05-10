@@ -5,10 +5,16 @@ const DeleteModal = ({
   isDeleteModalActive,
   setIsDeleteModalActive,
   itemDeleteId,
-  deleteTransactionItem,
+  deleteTransaction,
+  dispatch,
 }) => {
   const onCancelHandler = () => {
     setIsDeleteModalActive(false);
+  };
+
+  const onDeleteHandler = (id) => {
+    dispatch(deleteTransaction(id));
+    setIsDeleteModalActive(!isDeleteModalActive);
   };
 
   return (
@@ -27,10 +33,7 @@ const DeleteModal = ({
         <Button variant="secondary" onClick={onCancelHandler}>
           Cancel
         </Button>
-        <Button
-          variant="primary"
-          onClick={() => deleteTransactionItem(itemDeleteId)}
-        >
+        <Button variant="primary" onClick={() => onDeleteHandler(itemDeleteId)}>
           Delete
         </Button>
       </Modal.Footer>

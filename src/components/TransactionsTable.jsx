@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table, Container, Spinner } from "react-bootstrap/";
 import EditModal from "./Modals/EditModal";
 import DeleteModal from "./Modals/DeleteModal";
-import { connect } from "react-redux";
+import { connect, useSelector, useDispatch } from "react-redux";
 import {
   requestTransactions,
   changeTransactionStatus,
@@ -20,15 +20,16 @@ import {
   getFilteredTransactionsSelector,
 } from "./utils/selectors";
 
-const TransactionsTable = ({
-  setTransactions,
-  requestTransactions,
-  transactions,
-  getFilteredTransactions,
-  changeTransactionStatus,
-  deleteTransaction,
-  isLoading,
-}) => {
+const TransactionsTable = () => {
+  // map state to props
+  const transactions = useSelector((state) => getTransactions(state));
+  const getFilteredTransactions = useSelector((state) =>
+    getFilteredTransactionsSelector(state)
+  );
+  const isLoading = useSelector((state) => state.transactions.isLoading);
+  // dispatch hook
+  const dispatch = useDispatch();
+
   // modal controls
   const [isEditModalActive, setIsEditModalActive] = useState(false);
   const [isDeleteModalActive, setIsDeleteModalActive] = useState(false);
@@ -70,7 +71,7 @@ const TransactionsTable = ({
 
   // initial API call on page load
   useEffect(() => {
-    requestTransactions();
+    dispatch(requestTransactions());
   }, []);
 
   // filter func gets called each time filter value changes
@@ -79,20 +80,15 @@ const TransactionsTable = ({
       statusFilterValue,
       typeFilterValue,
     };
-
     setFilteredTransactions(getFilteredTransactions(filterValues));
   }, [transactions, statusFilterValue, typeFilterValue]);
 
+  // if no items on the page, go to previous page
   useEffect(() => {
     if (!currentTransactions.length && currentPage > 1) {
       setCurrentPage((page) => page - 1);
     }
   }, [currentTransactions]);
-
-  const editTransactionStatus = (id, status) => {
-    changeTransactionStatus(id, status);
-    setIsEditModalActive(false);
-  };
 
   const toggleEditModal = (id, status) => {
     setItemEditId(id);
@@ -100,18 +96,9 @@ const TransactionsTable = ({
     setIsEditModalActive(!isEditModalActive);
   };
 
-  const deleteTransactionItem = (id) => {
-    deleteTransaction(id);
-    setIsDeleteModalActive(!isDeleteModalActive);
-  };
-
   const toggleDeleteModal = (id) => {
     setItemDeleteId(id);
     setIsDeleteModalActive(!isDeleteModalActive);
-  };
-
-  const paginate = (pageNum) => {
-    setCurrentPage(pageNum);
   };
 
   return (
@@ -129,6 +116,7 @@ const TransactionsTable = ({
                 setFilterValue={setStatusFilterValue}
                 setCurrentPage={setCurrentPage}
                 setPagesPortionNumber={setPagesPortionNumber}
+                dispatch={dispatch}
               />
             </div>
             <div style={styles.filterBtnItem}>
@@ -141,6 +129,7 @@ const TransactionsTable = ({
                 setFilterValue={setTypeFilterValue}
                 setCurrentPage={setCurrentPage}
                 setPagesPortionNumber={setPagesPortionNumber}
+                dispatch={dispatch}
               />
             </div>
           </div>
@@ -153,6 +142,7 @@ const TransactionsTable = ({
                 typeFilterOptions={typeFilterOptions}
                 setStatusFilterValue={setStatusFilterValue}
                 setTypeFilterValue={setTypeFilterValue}
+                dispatch={dispatch}
               />
             </div>
             <div style={styles.importExportBtnItem}>
@@ -191,7 +181,6 @@ const TransactionsTable = ({
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
                 totalItemsNum={filteredTransactions.length}
-                paginate={paginate}
                 pagesPortionNumber={pagesPortionNumber}
                 setPagesPortionNumber={setPagesPortionNumber}
               />
@@ -206,14 +195,15 @@ const TransactionsTable = ({
           itemEditId={itemEditId}
           currentTransactionStatus={currentTransactionStatus}
           changeTransactionStatus={changeTransactionStatus}
-          editTransactionStatus={editTransactionStatus}
+          dispatch={dispatch}
         />
         {/* Modal appears on delete click */}
         <DeleteModal
           isDeleteModalActive={isDeleteModalActive}
           setIsDeleteModalActive={setIsDeleteModalActive}
           itemDeleteId={itemDeleteId}
-          deleteTransactionItem={deleteTransactionItem}
+          deleteTransaction={deleteTransaction}
+          dispatch={dispatch}
         />
       </Container>
     </>
@@ -269,15 +259,4 @@ const styles = {
   },
 };
 
-const mapStateToProps = (state) => ({
-  transactions: getTransactions(state),
-  getFilteredTransactions: getFilteredTransactionsSelector(state),
-  isLoading: state.transactions.isLoading,
-});
-
-export default connect(mapStateToProps, {
-  requestTransactions,
-  changeTransactionStatus,
-  deleteTransaction,
-  setTransactions,
-})(TransactionsTable);
+export default TransactionsTable;

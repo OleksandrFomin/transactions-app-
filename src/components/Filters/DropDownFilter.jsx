@@ -1,21 +1,30 @@
 import React from "react";
 import { Dropdown } from "react-bootstrap";
 
-const DropDownFilter = (props) => {
+const DropDownFilter = ({
+  transactions,
+  setTransactions,
+  filterValue,
+  setFilterValue,
+  filterOptions,
+  setCurrentPage,
+  setPagesPortionNumber,
+  dispatch,
+}) => {
   const onClickHandler = (e) => {
-    if (e.target.text !== props.filterValue) {
-      props.setTransactions(props.transactions);
-      props.setFilterValue(e.target.text);
-      props.setCurrentPage(1);
-      props.setPagesPortionNumber(1);
+    if (e.target.text !== filterValue) {
+      dispatch(setTransactions(transactions));
+      setFilterValue(e.target.text);
+      setCurrentPage(1);
+      setPagesPortionNumber(1);
     }
   };
 
   return (
     <Dropdown>
-      <Dropdown.Toggle>{props.filterValue}</Dropdown.Toggle>
+      <Dropdown.Toggle>{filterValue}</Dropdown.Toggle>
       <Dropdown.Menu>
-        {props.filterOptions.map((option, i) => (
+        {filterOptions.map((option, i) => (
           <Dropdown.Item onClick={onClickHandler} key={i}>
             {option}
           </Dropdown.Item>

@@ -7,11 +7,10 @@ import {
 import {
   updateObjectInArray,
   deleteObjectFromArray,
-  arrayToObject,
 } from "../../components/utils/helpers";
 
 let initialState = {
-  transactions: {},
+  transactions: [],
   isLoading: false,
 };
 
@@ -20,7 +19,7 @@ const transactionsReducer = (state = initialState, action) => {
     case SET_TRANSACTIONS:
       return {
         ...state,
-        transactions: arrayToObject(action.payload),
+        transactions: action.payload,
       };
 
     case CHANGE_TRANSACTION_STATUS:

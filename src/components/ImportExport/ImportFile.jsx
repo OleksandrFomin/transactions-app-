@@ -8,6 +8,7 @@ const ImportFile = ({
   setTypeFilterValue,
   statusFilterOptions,
   typeFilterOptions,
+  dispatch,
 }) => {
   const [CSVFile, setCSVFile] = useState(null);
   const didMountRef = useRef(false);
@@ -20,7 +21,7 @@ const ImportFile = ({
     let data = result.data;
     setStatusFilterValue(statusFilterOptions[0]);
     setTypeFilterValue(typeFilterOptions[0]);
-    setTransactions(data);
+    dispatch(setTransactions(data));
   };
 
   const importCSV = () => {
