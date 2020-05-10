@@ -21,75 +21,20 @@ import {
 } from "./utils/selectors";
 
 const TransactionsTable = () => {
-  // map state to props
+  // MAP STATE TO PROPS WITH HOOKS
   const transactions = useSelector((state) => getTransactions(state));
   const getFilteredTransactions = useSelector((state) =>
     getFilteredTransactionsSelector(state)
   );
   const isLoading = useSelector((state) => state.transactions.isLoading);
-  // dispatch hook
+  // DISPATCH HOOK
   const dispatch = useDispatch();
 
-  // modal controls
+  // MODAL CONTROLS
   const [isEditModalActive, setIsEditModalActive] = useState(false);
   const [isDeleteModalActive, setIsDeleteModalActive] = useState(false);
 
-  // id of item to be deleted/edited
-  const [itemEditId, setItemEditId] = useState(null);
-  const [itemDeleteId, setItemDeleteId] = useState(null);
-
-  // changes on edit button
-  const [currentTransactionStatus, setCurrentTransactionStatus] = useState(
-    null
-  );
-
-  // transactions after filters applied
-  const [filteredTransactions, setFilteredTransactions] = useState(
-    transactions
-  );
-
-  // data for pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pagesPortionNumber, setPagesPortionNumber] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentTransactions = filteredTransactions.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
-
-  // options available in dropdown filters
-  const statusFilterOptions = ["Show All", "Pending", "Completed", "Cancelled"];
-  const typeFilterOptions = ["Show All", "Refill", "Withdrawal"];
-
-  // current filter values
-  const [statusFilterValue, setStatusFilterValue] = useState(
-    statusFilterOptions[0]
-  );
-  const [typeFilterValue, setTypeFilterValue] = useState(typeFilterOptions[0]);
-
-  // initial API call on page load
-  useEffect(() => {
-    dispatch(requestTransactions());
-  }, []);
-
-  // filter func gets called each time filter value changes
-  useEffect(() => {
-    const filterValues = {
-      statusFilterValue,
-      typeFilterValue,
-    };
-    setFilteredTransactions(getFilteredTransactions(filterValues));
-  }, [transactions, statusFilterValue, typeFilterValue]);
-
-  // if no items on the page, go to previous page
-  useEffect(() => {
-    if (!currentTransactions.length && currentPage > 1) {
-      setCurrentPage((page) => page - 1);
-    }
-  }, [currentTransactions]);
-
+  // MODAL TOGGLER FUNCS
   const toggleEditModal = (id, status) => {
     setItemEditId(id);
     setCurrentTransactionStatus(status);
@@ -100,6 +45,62 @@ const TransactionsTable = () => {
     setItemDeleteId(id);
     setIsDeleteModalActive(!isDeleteModalActive);
   };
+
+  // ID OF ITEM TO BE DELETED/EDITED
+  const [itemEditId, setItemEditId] = useState(null);
+  const [itemDeleteId, setItemDeleteId] = useState(null);
+
+  // CHANGES ON EDIT BUTTON
+  const [currentTransactionStatus, setCurrentTransactionStatus] = useState(
+    null
+  );
+
+  // TRANSACTIONS AFTER FILTERS APPLIED
+  const [filteredTransactions, setFilteredTransactions] = useState(
+    transactions
+  );
+
+  //  DATA FOR PAGINATION
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pagesPortionNumber, setPagesPortionNumber] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentTransactions = filteredTransactions.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
+  // OPTIONS AVAILABLE IN DROPDOWN FILTERS
+  const statusFilterOptions = ["Show All", "Pending", "Completed", "Cancelled"];
+  const typeFilterOptions = ["Show All", "Refill", "Withdrawal"];
+
+  // CURRENT FILTER VALUES
+  const [statusFilterValue, setStatusFilterValue] = useState(
+    statusFilterOptions[0]
+  );
+  const [typeFilterValue, setTypeFilterValue] = useState(typeFilterOptions[0]);
+
+  // INITIAL API CALL ON PAGE LOAD
+  useEffect(() => {
+    dispatch(requestTransactions());
+  }, []);
+
+  // FILTER FUNC GETS CALLED EACH TIME FILTER VALUE CHANGES
+  useEffect(() => {
+    const filterValues = {
+      statusFilterValue,
+      typeFilterValue,
+    };
+    setFilteredTransactions(getFilteredTransactions(filterValues));
+  }, [transactions, statusFilterValue, typeFilterValue]);
+
+  // IF NO ITEMS ON THE PAGE, GO TO PREVIOUS PAGE
+  useEffect(() => {
+    if (!currentTransactions.length && currentPage > 1) {
+      setCurrentPage((page) => page - 1);
+    }
+  }, [currentTransactions]);
 
   return (
     <>

@@ -9,12 +9,12 @@ const PaginationComponent = ({
   pagesPortionNumber,
   setPagesPortionNumber,
 }) => {
-  const pageNumbers = [];
-  const numberOfPages = Math.ceil(totalItemsNum / itemsPerPage);
-  const portionSize = 3;
-  const numberOfPortions = Math.ceil(numberOfPages / portionSize);
-  const leftPortionPageNumber = (pagesPortionNumber - 1) * portionSize + 1;
-  const rightPortionPageNumber = pagesPortionNumber * portionSize;
+  const pageNumbers = []; // array of digits
+  const numberOfPages = Math.ceil(totalItemsNum / itemsPerPage); //total number of page
+  const portionSize = 3; // pages portion visible in paginator
+  const numberOfPortions = Math.ceil(numberOfPages / portionSize); // total number of pages portions
+  const leftPortionPageNumber = (pagesPortionNumber - 1) * portionSize + 1; // left threshold of portion
+  const rightPortionPageNumber = pagesPortionNumber * portionSize; // right threshold of portion
 
   for (let i = 1; i <= numberOfPages; i++) {
     pageNumbers.push(i);
