@@ -50,7 +50,7 @@ const TransactionsTable = ({
   // data for pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [pagesPortionNumber, setPagesPortionNumber] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentTransactions = filteredTransactions.slice(
@@ -144,7 +144,7 @@ const TransactionsTable = ({
               <ImportFile setTransactions={setTransactions} />
             </div>
             <div style={styles.importExportBtnItem}>
-              <ExportFile transactions={transactions} />
+              <ExportFile currentTransactions={currentTransactions} />
             </div>
           </div>
         </div>
@@ -163,7 +163,7 @@ const TransactionsTable = ({
                 itemsPerPage={itemsPerPage}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
-                totalItemsNum={transactions.length}
+                totalItemsNum={filteredTransactions.length}
                 paginate={paginate}
                 pagesPortionNumber={pagesPortionNumber}
                 setPagesPortionNumber={setPagesPortionNumber}

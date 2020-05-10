@@ -2,12 +2,12 @@ import React from "react";
 import { CSVLink } from "react-csv";
 import { Button } from "react-bootstrap";
 
-const ExportFile = ({ transactions }) => {
+const ExportFile = ({ currentTransactions }) => {
   return (
     <div>
       <Button variant="success" style={styles.inputBtn}>
         <CSVLink
-          data={transactions}
+          data={currentTransactions}
           filename={"transactions.csv"}
           target="_blank"
           style={styles.inputBtnText}
@@ -21,9 +21,14 @@ const ExportFile = ({ transactions }) => {
 
 const styles = {
   inputBtn: {
-    minWidth: "200px",
+    width: "200px",
   },
-  inputBtnText: { width: "100%", color: "#fff", textDecoration: "none" },
+  inputBtnText: {
+    display: "inline-block",
+    width: "100%",
+    color: "#fff",
+    textDecoration: "none",
+  },
 };
 
 export default ExportFile;

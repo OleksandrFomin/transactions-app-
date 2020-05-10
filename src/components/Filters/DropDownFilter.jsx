@@ -15,8 +15,10 @@ const DropDownFilter = (props) => {
     <Dropdown>
       <Dropdown.Toggle>{props.filterValue}</Dropdown.Toggle>
       <Dropdown.Menu>
-        {props.filterOptions.map((option) => (
-          <Dropdown.Item onClick={onClickHandler}>{option}</Dropdown.Item>
+        {props.filterOptions.map((option, i) => (
+          <Dropdown.Item onClick={onClickHandler} key={i}>
+            {option}
+          </Dropdown.Item>
         ))}
       </Dropdown.Menu>
     </Dropdown>
