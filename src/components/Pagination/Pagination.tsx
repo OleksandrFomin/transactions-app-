@@ -7,6 +7,7 @@ type PaginationComponentProps = {
   setCurrentPageHandler: (pageNum: number) => void;
   pagesPortionNum: number;
   setPagesPortionNumHandler: (portionNum: number) => void;
+  itemsPerPage: number;
 };
 
 const PaginationComponent: React.FC<PaginationComponentProps> = ({
@@ -15,8 +16,8 @@ const PaginationComponent: React.FC<PaginationComponentProps> = ({
   setCurrentPageHandler,
   pagesPortionNum,
   setPagesPortionNumHandler,
+  itemsPerPage,
 }) => {
-  const [itemsPerPage, setItemsPerPage] = useState(5);
   const pageNumbers = []; // array of digits
   const numberOfPages = Math.ceil(totalItemsCount / itemsPerPage); //total number of page
   const portionSize = 3; // pages portion visible in paginator

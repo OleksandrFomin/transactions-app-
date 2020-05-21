@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 import { Modal, Button, Dropdown, DropdownButton } from "react-bootstrap";
 
-const EditModal = ({
+type EditModalProps = {
+  status: string;
+  isActive: boolean;
+  id: number;
+  confirmAction: (newStatus: string, id: number) => void;
+  hideModalHandler: () => void;
+};
+
+const EditModal: React.FC<EditModalProps> = ({
   status,
   isActive,
   id,
@@ -10,11 +18,11 @@ const EditModal = ({
 }) => {
   const [newStatus, setNewStatus] = useState(status);
 
-  const onChangeHandler = (e) => setNewStatus(e.target.text);
+  const onChangeHandler = (e: any) => setNewStatus(e.target.text);
 
   return (
     <div>
-      <Modal size="md" show={isActive} onHide={hideModalHandler}>
+      <Modal size="lg" show={isActive} onHide={hideModalHandler}>
         <Modal.Header closeButton>
           <Modal.Title>Change transaction status</Modal.Title>
         </Modal.Header>
@@ -22,7 +30,7 @@ const EditModal = ({
           <p>Select transaction status and press Save to confirm </p>
         </Modal.Body>
         <div style={{ marginLeft: "20px", marginBottom: "20px" }}>
-          <DropdownButton title={newStatus || status}>
+          <DropdownButton id="dropdownBtn" title={newStatus}>
             <Dropdown.Item onClick={onChangeHandler}>Pending</Dropdown.Item>
             <Dropdown.Item onClick={onChangeHandler}>Completed</Dropdown.Item>
             <Dropdown.Item onClick={onChangeHandler}>Cancelled</Dropdown.Item>

@@ -4,6 +4,7 @@ import {
   selectTotalItemsCount,
   selectCurrentPage,
   selectPagesPortionNum,
+  selectItemsPerPage,
 } from "../../selectors/selectors";
 import PaginationComponent from "../../components/Pagination/Pagination";
 import {
@@ -17,6 +18,7 @@ const PaginationContainer: React.FC = () => {
   const totalItemsCount = useSelector(selectTotalItemsCount);
   const currentPage = useSelector(selectCurrentPage);
   const pagesPortionNum = useSelector(selectPagesPortionNum);
+  const itemsPerPage = useSelector(selectItemsPerPage);
 
   const setCurrentPageHandler = (pageNum: number): void => {
     dispatch(setCurrentPage(pageNum));
@@ -34,6 +36,7 @@ const PaginationContainer: React.FC = () => {
         setCurrentPageHandler={setCurrentPageHandler}
         pagesPortionNum={pagesPortionNum}
         setPagesPortionNumHandler={setPagesPortionNumHandler}
+        itemsPerPage={itemsPerPage}
       />
     </>
   );

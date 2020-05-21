@@ -1,9 +1,21 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 
-const DeleteModal = ({ isActive, id, confirmAction, hideModalHandler }) => {
+type DeleteModalProps = {
+  isActive: boolean;
+  id: number;
+  confirmAction: (id: number) => void;
+  hideModalHandler: () => void;
+};
+
+const DeleteModal: React.FC<DeleteModalProps> = ({
+  isActive,
+  id,
+  confirmAction,
+  hideModalHandler,
+}) => {
   return (
-    <Modal size="md" show={isActive} onHide={hideModalHandler}>
+    <Modal size="lg" show={isActive} onHide={hideModalHandler}>
       <Modal.Header closeButton>
         <Modal.Title>Confirm Delete</Modal.Title>
       </Modal.Header>
