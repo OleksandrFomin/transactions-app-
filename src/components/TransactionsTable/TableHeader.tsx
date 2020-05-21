@@ -1,6 +1,6 @@
 import React from "react";
 
-const TableHeader = () => {
+const TableHeader: React.FC = () => {
   return (
     <thead>
       <tr style={{ textAlign: "center" }}>

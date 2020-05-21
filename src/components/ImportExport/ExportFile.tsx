@@ -1,13 +1,18 @@
 import React from "react";
 import { CSVLink } from "react-csv";
 import { Button } from "react-bootstrap";
+import { TransactionType } from "../../api/types/types";
 
-const ExportFile = ({ currentTransactions }) => {
+type ExportFileProps = {
+  transactions: Array<TransactionType>;
+};
+
+const ExportFile: React.FC<ExportFileProps> = ({ transactions }) => {
   return (
     <div>
       <Button variant="success" style={styles.inputBtn}>
         <CSVLink
-          data={currentTransactions}
+          data={transactions}
           filename={"transactions.csv"}
           target="_blank"
           style={styles.inputBtnText}

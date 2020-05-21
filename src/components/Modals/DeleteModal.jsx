@@ -1,28 +1,9 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 
-const DeleteModal = ({
-  isDeleteModalActive,
-  setIsDeleteModalActive,
-  itemDeleteId,
-  deleteTransaction,
-  dispatch,
-}) => {
-  const onCancelHandler = () => {
-    setIsDeleteModalActive(false);
-  };
-
-  const onDeleteHandler = (id) => {
-    dispatch(deleteTransaction(id));
-    setIsDeleteModalActive(!isDeleteModalActive);
-  };
-
+const DeleteModal = ({ isActive, id, confirmAction, hideModalHandler }) => {
   return (
-    <Modal
-      size="md"
-      show={isDeleteModalActive}
-      onHide={() => setIsDeleteModalActive(false)}
-    >
+    <Modal size="md" show={isActive} onHide={hideModalHandler}>
       <Modal.Header closeButton>
         <Modal.Title>Confirm Delete</Modal.Title>
       </Modal.Header>
@@ -30,10 +11,10 @@ const DeleteModal = ({
         <p> Are you sure you want to delete the transaction? </p>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={onCancelHandler}>
+        <Button variant="secondary" onClick={hideModalHandler}>
           Cancel
         </Button>
-        <Button variant="primary" onClick={() => onDeleteHandler(itemDeleteId)}>
+        <Button variant="primary" onClick={() => confirmAction(id)}>
           Delete
         </Button>
       </Modal.Footer>

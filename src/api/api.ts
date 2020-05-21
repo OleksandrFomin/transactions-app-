@@ -1,5 +1,6 @@
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
+import { TransactionType } from "./types/types";
 
 const DATA = [
   {
@@ -66,7 +67,9 @@ mock.onGet("/transactions").reply(200, {
   transactions: DATA,
 });
 
-export const fetchTransactionsRequest = async () => {
+export const fetchTransactionsRequest = async (): Promise<Array<
+  TransactionType
+> | void> => {
   try {
     let response = await axios.get("/transactions");
     return response.data.transactions;

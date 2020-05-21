@@ -2,37 +2,19 @@ import React, { useState } from "react";
 import { Modal, Button, Dropdown, DropdownButton } from "react-bootstrap";
 
 const EditModal = ({
-  currentTransactionStatus,
-  changeTransactionStatus,
-  itemEditId,
-  setIsEditModalActive,
-  isEditModalActive,
-  dispatch,
+  status,
+  isActive,
+  id,
+  confirmAction,
+  hideModalHandler,
 }) => {
-  const [transactionStatus, setTransactionStatus] = useState(
-    currentTransactionStatus
-  );
+  const [newStatus, setNewStatus] = useState(status);
 
-  const onClickHandler = (e) => {
-    setTransactionStatus(e.target.text);
-  };
-
-  const onSaveHandler = () => {
-    dispatch(changeTransactionStatus(itemEditId, transactionStatus));
-    setIsEditModalActive(false);
-  };
-
-  const onCancelHandler = () => {
-    setIsEditModalActive(false);
-  };
+  const onChangeHandler = (e) => setNewStatus(e.target.text);
 
   return (
     <div>
-      <Modal
-        size="md"
-        show={isEditModalActive}
-        onHide={() => setIsEditModalActive(false)}
-      >
+      <Modal size="md" show={isActive} onHide={hideModalHandler}>
         <Modal.Header closeButton>
           <Modal.Title>Change transaction status</Modal.Title>
         </Modal.Header>
@@ -40,18 +22,21 @@ const EditModal = ({
           <p>Select transaction status and press Save to confirm </p>
         </Modal.Body>
         <div style={{ marginLeft: "20px", marginBottom: "20px" }}>
-          <DropdownButton title={transactionStatus || currentTransactionStatus}>
-            <Dropdown.Item onClick={onClickHandler}>Pending</Dropdown.Item>
-            <Dropdown.Item onClick={onClickHandler}>Completed</Dropdown.Item>
-            <Dropdown.Item onClick={onClickHandler}>Cancelled</Dropdown.Item>
+          <DropdownButton title={newStatus || status}>
+            <Dropdown.Item onClick={onChangeHandler}>Pending</Dropdown.Item>
+            <Dropdown.Item onClick={onChangeHandler}>Completed</Dropdown.Item>
+            <Dropdown.Item onClick={onChangeHandler}>Cancelled</Dropdown.Item>
           </DropdownButton>
         </div>
 
         <Modal.Footer>
-          <Button variant="secondary" onClick={onCancelHandler}>
+          <Button variant="secondary" onClick={hideModalHandler}>
             Close
           </Button>
-          <Button variant="primary" onClick={onSaveHandler}>
+          <Button
+            variant="primary"
+            onClick={() => confirmAction(newStatus, id)}
+          >
             Save
           </Button>
         </Modal.Footer>
